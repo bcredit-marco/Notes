@@ -27,3 +27,103 @@ using (XXXEntities ent = new XXXEntites(Your decypted conn str here))
     //Do what you want....
 
 }
+
+
+
+
+
+
+
+
+  #region Constructors
+
+    public <#=code.Escape(container)#>()
+        : base(GetConnectionString(), ContainerName)
+    {
+        Initialize();
+    }
+
+	public static string GetConnectionString()
+        {
+            string SQLDB_SERVER = ConfigurationManager.AppSettings["SQLDB_SERVER"];
+            string SQLDB_DATABASE = ConfigurationManager.AppSettings["SQLDB_DATABASE"];
+            string SQLDB_USER = ConfigurationManager.AppSettings["SQLDB_USER"];
+            string SQLDB_PASSWORD = ConfigurationManager.AppSettings["SQLDB_PASSWORD"];
+
+            encryptador Encripta = new encryptador("");
+                string strDesencriptado = string.Empty;
+                Encripta.EncryptDecryptPublic(false, SQLDB_PASSWORD, ref strDesencriptado);
+
+                string connString = new System.Data.EntityClient.EntityConnectionStringBuilder
+                {
+                    Metadata = "res://*",
+                    Provider = "System.Data.SqlClient",
+                    ProviderConnectionString = new System.Data.SqlClient.SqlConnectionStringBuilder
+                    {
+                        InitialCatalog = SQLDB_DATABASE,
+                        DataSource = SQLDB_SERVER,
+                        IntegratedSecurity = true,
+                        MultipleActiveResultSets = true,
+                        UserID = SQLDB_USER,                 // User ID such as "sa"
+                        Password = strDesencriptado,               // hide the password
+                    }.ConnectionString
+                }.ConnectionString;
+            return String.Format(connString);
+        }
+
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
+using System.Data.Common;
+using System.Data.EntityClient;
+using System.Data.Metadata.Edm;
+using System.Data.Objects.DataClasses;
+using System.Data.Objects;
+using System.Data;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
+using Common;
+
+
+
+
+
+
+
+  public BD_DIGITALIZACION_ENTITIES()
+            : base(GetConnectionString(), ContainerName)
+        {
+            Initialize();
+        }
+    
+    	public static string GetConnectionString()
+            {
+                string SQLDB_SERVER = ConfigurationManager.AppSettings["SQLDB_SERVER"];
+                string SQLDB_DATABASE = ConfigurationManager.AppSettings["SQLDB_DATABASE"];
+                string SQLDB_USER = ConfigurationManager.AppSettings["SQLDB_USER"];
+                string SQLDB_PASSWORD = ConfigurationManager.AppSettings["SQLDB_PASSWORD"];
+    
+                encryptador Encripta = new encryptador("");
+                    string strDesencriptado = string.Empty;
+                    Encripta.EncryptDecryptPublic(false, SQLDB_PASSWORD, ref strDesencriptado);
+    
+                    string connString = new System.Data.EntityClient.EntityConnectionStringBuilder
+                    {
+                        Metadata = "res://*",
+                        Provider = "System.Data.SqlClient",
+                        ProviderConnectionString = new System.Data.SqlClient.SqlConnectionStringBuilder
+                        {
+                            InitialCatalog = SQLDB_DATABASE,
+                            DataSource = SQLDB_SERVER,
+                            IntegratedSecurity = false,
+                            MultipleActiveResultSets = true,
+                            UserID = SQLDB_USER,                 // User ID such as "sa"
+                            Password = strDesencriptado,               // hide the password
+                        }.ConnectionString
+                    }.ConnectionString;
+                return String.Format(connString);
+            }
