@@ -12,3 +12,18 @@ public partial class CURAEntities : DbContext
         }
     }
 
+
+
+1) First use MD5 or something else to encypt the connection string, and paste the result into the web.config <ConnectionString> tags.
+
+2) Then in your programm of cs files, you should fetch the connstr by referring System.Configuration.ConfigurationManager.ConnectionStrings["Your Tag Name"].ConnectionString to get the encyptted string, and then decypt it.
+
+3) In the end, you should pass this connectionString as a constructor parameter, something like this:
+
+using (XXXEntities ent = new XXXEntites(Your decypted conn str here))
+
+{
+
+    //Do what you want....
+
+}
