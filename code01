@@ -1,0 +1,14 @@
+//serializar connexionstring
+
+
+public partial class CURAEntities : DbContext
+    {
+        public CURAEntities(string dummy)
+            : base("name=CURAEntities")
+        {
+            string con = ConfigurationManager.AppSettings["CURA"].ToString();
+            DES_Codec myCodec = new DES_Codec();
+            Database.Connection.ConnectionString = myCodec.DecodeString(con);
+        }
+    }
+
