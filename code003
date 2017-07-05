@@ -1,0 +1,92 @@
+public partial class Default : System.Web.UI.Page
+    {
+        public class User
+        {
+            public string name { get; set; }
+            public string teamname { get; set; }
+            public string email { get; set; }
+            public Array players { get; set; }
+        }
+
+        public class Test
+        {
+            public string test { get; set; }
+
+        }
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            /*System.Net.HttpWebRequest webrequest = (HttpWebRequest)System.Net.WebRequest.Create("http://localhost:8000/DEMOService/Client/156");
+            webrequest.Method = "POST";
+            webrequest.ContentType = "application/json";
+            webrequest.ContentLength = 0;
+            Stream stream = webrequest.GetRequestStream();
+            stream.Close();
+            string result;
+            using (WebResponse response = webrequest.GetResponse()) //It gives exception at this line liek this http://prntscr.com/8c1gye
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    result = reader.ReadToEnd();
+                    Label1.Text = Convert.ToString(result);
+                }
+            }*/
+
+
+            /*JavaScriptSerializer json_serializer = new JavaScriptSerializer();
+            Test routes_list =
+                   (Test)json_serializer.DeserializeObject("{ \"test\":\"some data\" }");
+
+
+            string json = @"{""user"":{""name"":""asdf"",""teamname"":""b"",""email"":""c"",""players"":[""1"",""2""]}}";
+           // string json = @"{""name"":""asdf"",""teamname"":""b"",""email"":""c"",""players"":[""1"",""2""]}";
+            //User user = new User(json);*/
+
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+            var user = jss.Deserialize<List<CREDENCIALES>>("[{ 'IP':'172.168.1.1','USUARIO':'BC2213' }]");
+            var user2 = jss.Deserialize<CREDENCIALES>("{ 'IP':'172.168.1.1','USUARIO':'BC2213' }");
+
+            
+            
+            //var f;
+            //var user = jss.Deserialize<List<COLUMNAS>>("[{ \"test\":\"some data\" }]"); 
+
+
+            var url = "http://localhost:53172/PrincipalRest.svc/test/testing/testsdf";
+            // var url = "http://localhost:8000/DEMOService/Client/156";
+            var webrequest = (HttpWebRequest)System.Net.WebRequest.Create(url);
+
+            using (var response1 = webrequest.GetResponse())
+            using (var reader1 = new StreamReader(response1.GetResponseStream()))
+            {
+                var result = reader1.ReadToEnd();
+                //Label1.Text = Convert.ToString(result);
+            }
+
+
+
+            var postString = "'hash':'test','app':'testing'";//new {clave1:valor1, clave2:valor2};
+                byte[] data = UTF8Encoding.UTF8.GetBytes(postString);
+ 
+                HttpWebRequest request;
+                request = WebRequest.Create("http://localhost:53172/PrincipalRest.svc/test/testing/testsdf") as HttpWebRequest;
+                request.Timeout = 10 * 1000;
+                request.Method = "POST";
+                request.ContentLength = data.Length;
+                request.ContentType = "application/json; charset=utf-8";
+
+
+
+                string credentials = Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes("usuario:clave"));
+                request.Headers.Add("Authorization", "Basic " + credentials);
+
+
+
+                Stream postStream = request.GetRequestStream();
+                postStream.Write(data, 0, data.Length);
+ 
+                HttpWebResponse response = request.GetResponse() as HttpWebResponse;
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                string body = reader.ReadToEnd();
+        }
+    }
