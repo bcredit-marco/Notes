@@ -1,0 +1,127 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Activation;
+using System.ServiceModel.Web;
+using System.Text;
+using AplicacionServicios.CAdministracion;
+using DominioEntidades;
+using Newtonsoft.Json;
+
+namespace ServicioWebApi
+{
+    [ServiceContract(Namespace = "")]
+    [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
+    public class ServicioCecAdministracion
+    {
+        private readonly CAplicacionPersonas _aplicacionPersonas;
+        private ServicioCecAdministracion()
+        {
+            _aplicacionPersonas = new CAplicacionPersonas();
+        }
+
+        [OperationContract]
+        [BasicAuthenticationInvoker] // this is the auth attribute!
+        [WebInvoke(Method = "GET", UriTemplate = "Personas3", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        public string GetListPersonas3()
+        {
+            try
+            {
+                
+                return "hola mundo";
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        [OperationContract]
+        [BasicAuthenticationInvoker] // this is the auth attribute!
+        [WebInvoke(Method = "POST", UriTemplate = "lotes/crear", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        public Response AddTransaction(Lote objLote)
+        {
+            var t = new Response
+            {
+                identificador = objLote.identificador
+            };
+
+            return t;
+        }
+
+        public class Response
+        {
+            public string identificador { get; set; }
+        }
+
+        public class Lote
+        {
+            public string identificador { get; set; }
+
+            public int nroFacturas { get; set; }
+        }
+
+
+
+        //[WebInvoke(Method = "GET", UriTemplate = "/Personas", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        //public List<personas> GetListPersonas()
+        //{
+        //    try
+        //    {
+        //       // throw new Exception("errorsadfsdf");
+        //        return _aplicacionPersonas.GetListTipoProductoActivo();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+            
+        //}
+
+
+        //[WebInvoke(Method = "GET", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, UriTemplate = "Personas2")]
+        //public List<personas> GetListPersonas2()
+        //{
+        //    //return _aplicacionPersonas.GetListTipoProductoActivo();
+        //    return null;
+        //}
+
+        //[OperationContract]
+        //[WebInvoke(Method = "POST", UriTemplate = "/Transaction", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        //public personas AddTransaction(personas transaction)
+        //{
+        //    //
+        //    transaction.Id = 1000;
+        //    return transaction;
+        //    return null;
+
+        //}
+
+        //[OperationContract]
+        //[WebInvoke(Method = "PUT", UriTemplate = "/Transaction/{id}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        //public personas UpdateTransaction(personas transaction, string id)
+        //{
+        //    //
+
+        //    return transaction;
+        //    return null;
+        //}
+
+        //[OperationContract]
+        //[WebInvoke(Method = "DELETE", UriTemplate = "/Transaction/{id}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        //public personas DeleteTransaction(string id)
+        //{
+        //    //
+        //    var persona = new personas();
+        //    persona.nombre = "tes";
+        //    persona.apellido = "test";
+        //    return persona;
+        //    return null;
+        //}
+    }
+
+    
+}
