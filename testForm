@@ -1,0 +1,352 @@
+@media only screen and (max-width: 800px) {
+    /*  Author     : Vinay
+    Description: Responsive GridView
+*/
+
+    /* Force gridview to not be like gridview anymore */
+    #no-more-gridView table,
+    #no-more-gridView thead,
+    #no-more-gridView tbody,
+    #no-more-gridView th,
+    #no-more-gridView td,
+    #no-more-gridView tr {
+        display: block;
+    }
+    /* Hide table headers (but not display: none;, for accessibility) */
+    #no-more-gridView .table_column_head > * {
+        display: none;
+    }
+    #no-more-gridView th { display: none; }
+
+    #no-more-gridView tr {
+        all: revert;
+        /*border: 2px solid #ccc;*/
+        border-bottom: 3px solid #ccc;
+        height: auto !important;
+    }
+
+    #no-more-gridView td {
+        /* Behave  like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        padding-bottom: 1em;
+    }
+
+        #no-more-gridView td:before {
+            /* Now like a table header */
+            position: absolute;
+            /* Top/left values mimic padding */
+            left: 6px;
+            width: 45%;
+            padding-right: 10px;
+            white-space: nowrap;
+            text-align: left;
+            font-weight: bold;
+        }
+        /*
+    Label the data
+    */
+        #no-more-gridView td:before {
+            content: attr(data-title);
+        }
+}
+
+
+
+
+
+
+
+
+
+
+    <%--<asp:UpdatePanel ID="upnlRecargoValidacion" runat="server" UpdateMode="Conditional">
+        <ContentTemplate>--%>
+            <div class="container">
+                <div id="pnlListaRecargasPendientes" runat="server">
+                            <fieldset>
+                                <legend>
+                                    <h4 class="moveback">
+                                        MODIFICACION DE RECARGOS
+                                    </h4>
+                                </legend>
+                               <h4 class="moveback">
+                                  <asp:Button ID="btnNuevoRecargo" class="btn btn-default" runat="server" Text="Nuevo Recargo" OnClick="btnNuevoRecargo_Click"/>
+                               </h4>
+                                <div>
+                                    <div id="no-more-gridView">
+                                        <asp:GridView ID="grdListaRecargosPendientes" CssClass="table table-hover table-striped grid" runat="server" Width="100%" EmptyDataText="No Records found" AutoGenerateColumns="False" DataKeyNames="CT_ID_COBERTURA_AFILIACION_TEMP" OnRowCommand="grdListaRecargosPendientes_RowCommand" OnRowDataBound="grdListaRecargosPendientes_RowDataBound">
+                                            
+                                            <Columns>
+                                                <asp:BoundField DataField="CTVC_ID_USER_MODIFICA_RECARGO" HeaderText="USUARIO" />
+                                                <asp:BoundField DataField="CTVC_DESCRIPCION" HeaderText="CONDICION" />
+                                                <asp:BoundField DataField="PCVC_ID_POLIZA_COLOCADA" HeaderText="POLIZA" />
+                                                <asp:BoundField DataField="CTVC_TIPO_ASEGURADO" HeaderText="TIPO DE ASEGURADO" />
+                                                <asp:BoundField DataField="CTVC_ASEGURADO" HeaderText="ASEGURADO" />
+                                                <asp:BoundField DataField="CAMO_VALOR_ASEGURADO" HeaderText="VALOR ASEGURADO" />
+                                                <asp:BoundField DataField="CAFL_PORCENTAJE_COBERTURA" HeaderText="PORCENTAJE COBERTURA" />
+                                                <asp:ButtonField ButtonType="Image" CommandName="EDITAR" ImageUrl="~/UI/img/file_edit.png" Text="Editar">
+                                                <ControlStyle Width="16px" />
+                                                <ItemStyle HorizontalAlign="Center" />
+                                                </asp:ButtonField>
+                                                <asp:ButtonField ButtonType="Image" CommandName="ELIMINAR" ImageUrl="~/UI/img/file_delete.png" Text="Eliminar">
+                                                <ControlStyle Width="16px" />
+                                                <ItemStyle HorizontalAlign="Center" />
+                                                </asp:ButtonField>
+                                            </Columns>
+                                           <%-- <HeaderStyle CssClass="panel panel-primary"/>--%>
+                                        </asp:GridView>
+                                    </div>
+                                  </div>
+                            </fieldset>
+                    </div>
+                <div id="pnlFormSaveEdit" runat="server">
+                    
+                    <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <div class="panel-title">
+                        <i class="glyphicon glyphicon-wrench pull-right"></i>
+                        <h4><asp:Label ID="lblTitle" runat="server" Text=""></asp:Label></h4>
+                      </div>
+                    </div>
+                    <div class="panel-body">
+          
+                      <div class="form form-vertical">
+                        
+                        <div class="control-group">
+                          <label>Valor Asegurado
+                              <asp:RequiredFieldValidator ID="rfvAplicativo" runat="server" ControlToValidate="txtValorAsegurado" ErrorMessage="Debe escribir el valor asegurado" Text="*" Font-Size="Large" ForeColor="#FF3300">*</asp:RequiredFieldValidator>
+                              <asp:RegularExpressionValidator ID="revAplicativo" runat="server" ControlToValidate="txtValorAsegurado" ErrorMessage="El valor no es valido" Text="*" ForeColor="Red" Font-Size="Large" ValidationExpression="^[0-9]+(\.[0-9]+)?$">*</asp:RegularExpressionValidator>
+                          </label>
+                          &nbsp;<div class="controls">                            
+                            <asp:TextBox ID="txtValorAsegurado" CssClass="form-control" runat="server" placeholder="Ingrese el valor asegurado"></asp:TextBox>
+                          </div>
+                        </div>  
+                            
+                        <div class="control-group">
+                          <label>Porcentaje Cobertura
+                              <asp:RequiredFieldValidator ID="rfvPorcentaje" runat="server" ControlToValidate="txtPorcentajeCobertura" ErrorMessage="Debe escribir el Porcentaje de cobertura" Text="*" Font-Size="Large" ForeColor="#FF3300">*</asp:RequiredFieldValidator>
+                             <asp:RegularExpressionValidator ID="revPorcentaje" runat="server" ControlToValidate="txtPorcentajeCobertura" ErrorMessage="El valor no es valido" Text="*" ForeColor="Red" Font-Size="Large" ValidationExpression="^[0-9]+(\.[0-9]+)?$">*</asp:RegularExpressionValidator> 
+                          </label>
+                          <div class="controls">
+                              <asp:TextBox id="txtPorcentajeCobertura" CssClass="form-control" runat="server" placeholder="Ingrese el Porcentaje de cobertura"/>
+                          </div>
+                        </div> 
+                          
+                          <div class="control-group">
+                          <label>Condicion
+                              <asp:RequiredFieldValidator ID="rfvCondicion" runat="server" ControlToValidate="txtCondicion" ErrorMessage="Debe escribir la descripcion" Text="*" Font-Size="Large" ForeColor="#FF3300">*</asp:RequiredFieldValidator>
+                          </label>
+                          &nbsp;<div class="controls">                            
+                            <asp:TextBox ID="txtCondicion" CssClass="form-control" runat="server" placeholder="Ingrese la condicion del cambio"></asp:TextBox>
+                          </div>
+                        </div> 
+
+                        <div class="control-group">
+                          <label></label>
+                          <div class="controls">
+                                <asp:Button ID="btGuardar" class="btn btn-primary" runat="server" Text="Guardar" OnClick="btGuardar_Click" />
+                                <asp:Button ID="btnCancelar" class="btn btn-default" runat="server" Text="Cancelar" OnClick="btnCancelar_Click" CausesValidation="False" />
+                          </div>
+                        </div>   
+            
+                      </div>
+                    </div><!--/panel content-->
+                  </div>
+
+                </div>
+            </div>
+        <%--</ContentTemplate>
+    </asp:UpdatePanel>--%>
+
+
+
+
+
+
+
+
+
+
+
+
+
+namespace PresentacionWeb.Sitio.Vista.Recargos
+{
+    public partial class RecargoModificacion : Page
+    {
+        private readonly CRecargoValidacion _cRecargoValidacion = new CRecargoValidacion();
+        
+        #region Metodos privados - eventos
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (IsPostBack)
+            {
+                return;
+            }
+
+            LoadInitial();
+        }
+
+        protected void grdListaRecargosPendientes_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            var dataKey = grdListaRecargosPendientes.DataKeys[Convert.ToInt32(e.CommandArgument)];
+            if (dataKey != null)
+            {
+                int id = Convert.ToInt32(dataKey.Value);
+                string strCommand = e.CommandName;
+                switch (strCommand)
+                {
+                    case "EDITAR":
+                        lblTitle.Text = "Modificacion de Recargo";
+                        ViewState["ID"] = id;
+
+                        var objCoberturaAfiliacionT = _cRecargoValidacion.GetObjCAfiliacionById(id);
+                        txtValorAsegurado.Text = Convert.ToString(objCoberturaAfiliacionT.CAMO_VALOR_ASEGURADO);
+                        txtPorcentajeCobertura.Text = Convert.ToString(objCoberturaAfiliacionT.CAFL_PORCENTAJE_COBERTURA);
+                        txtCondicion.Text = objCoberturaAfiliacionT.CTVC_DESCRIPCION;
+
+                        pnlFormSaveEdit.Visible = true;
+                        pnlListaRecargasPendientes.Visible = false;
+                        break;
+                    case "ELIMINAR":
+                        var response = _cRecargoValidacion.UpdateDeleteRecargo(id);
+                        if (response)
+                        {
+                            //el registro cobertura afiliacion temporal ha sido eliminado
+                            ScriptManager.RegisterStartupScript(this, typeof (Page), "response",
+                                CParametrosComplejos.ToastrSuccess("El Recargo ha sido eliminado"), true);
+                            LoadInitial();
+                        }
+                        else
+                        {
+                            ScriptManager.RegisterStartupScript(this, typeof(Page), "response",CParametrosComplejos.ToastrError("No se puede Eliminar el registro"), true);
+                        }
+                        break;
+                }
+            }
+        }
+
+        protected void grdListaRecargosPendientes_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                e.Row.Cells[0].Attributes["data-title"] = "USUARIO";
+                e.Row.Cells[1].Attributes["data-title"] = "CONDICION";
+                e.Row.Cells[2].Attributes["data-title"] = "POLIZA";
+                e.Row.Cells[3].Attributes["data-title"] = "ASEGURADO";
+                e.Row.Cells[4].Attributes["data-title"] = "USUARIO";
+                e.Row.Cells[5].Attributes["data-title"] = "VALOR ASEGURADO";
+                e.Row.Cells[6].Attributes["data-title"] = "PORCENTAJE COBERTURA";
+
+                //((ImageButton)e.Row.Cells[7].Controls[0]).OnClientClick = "showLoader('Procesando');"; // add any JS you want here
+                //((ImageButton)e.Row.Cells[8].Controls[0]).OnClientClick = "if(!confirm('Desea Eliminar el Recargo?')) { return;}else{ showLoader('Guardando cambios');}"; // add any JS you want here
+                ((ImageButton)e.Row.Cells[8].Controls[0]).OnClientClick = "if(!confirm('Desea Eliminar el Recargo?')) return;"; // add any JS you want here
+            }
+        }
+
+        protected void btGuardar_Click(object sender, EventArgs e)
+        {
+            var objCobAfiliacionT = new COBERTURA_AFILIACION_TEMP();
+            objCobAfiliacionT.CAMO_VALOR_ASEGURADO = Convert.ToDecimal(txtValorAsegurado.Text);
+            objCobAfiliacionT.CAFL_PORCENTAJE_COBERTURA = Convert.ToDouble(txtPorcentajeCobertura.Text);
+            objCobAfiliacionT.CTVC_DESCRIPCION = txtCondicion.Text;
+
+            string toastResponse;
+            var idIdCobAfiliacion = Convert.ToInt32(ViewState["ID"]);
+            if (idIdCobAfiliacion != 0)
+            {
+                //el registro se esta editando
+                objCobAfiliacionT.CT_ID_COBERTURA_AFILIACION_TEMP = idIdCobAfiliacion;
+                bool bolSuccess = _cRecargoValidacion.UpdateObjCobAfiliacionEnRevisionRecargo(objCobAfiliacionT);
+                if (bolSuccess)
+                {
+                    toastResponse = CParametrosComplejos.ToastrSuccess("El Recargo ha sido Actualizado");
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "response", toastResponse, true);
+                }
+                else
+                {
+                    toastResponse = CParametrosComplejos.ToastrError("Ha ocurrido un error en la actualizacion");
+                    ScriptManager.RegisterStartupScript(this, typeof(Page), "response", toastResponse, true);
+                    return;
+                }
+
+            }
+            //else
+            //{
+            //    //nuevo registro
+            //    var intIdAplicativo = _cAdministracion.SaveAplicativo(objAplicativo);
+            //    if (intIdAplicativo != 0)
+            //    {
+            //        toastResponse = CParametrosComplejos.ToastrSuccess("El Aplicativo ha sido Agregado Correctamente");
+            //    }
+            //    else
+            //    {
+            //        toastResponse = CParametrosComplejos.ToastrError("No se puede agregar el aplicativo, ya existe");
+            //        ScriptManager.RegisterStartupScript(this, typeof(Page), "response", toastResponse, true);
+            //        return;
+            //    }
+
+
+            //}
+
+            //ScriptManager.RegisterStartupScript(this, typeof(Page), "response", toastResponse, true);
+
+            LoadInitial();
+            ViewState["EDITAR"] = false;
+        }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            LoadInitial();
+        }
+
+        protected void btnNuevoRecargo_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Recargos.aspx");
+        }
+
+        #endregion
+
+        #region Metodos publicos
+
+        private void LoadInitial()
+        {
+            ViewState["ID"] = 0;
+
+            pnlListaRecargasPendientes.Visible = true;
+            pnlFormSaveEdit.Visible = false;
+            LoadDataGridView();
+            ClearControls();
+        }
+
+        public void LoadDataGridView()
+        {
+            grdListaRecargosPendientes.DataSource = _cRecargoValidacion.GetListRecargasPendientes();
+            grdListaRecargosPendientes.DataBind();
+        }
+
+
+        private void ClearControls()
+        {
+            txtValorAsegurado.Text = string.Empty;
+            txtValorAsegurado.Text = string.Empty;
+            txtCondicion.Text = string.Empty;
+        }
+
+
+
+        #endregion
+
+        
+        
+    }
+}
+
+
+
